@@ -1,4 +1,4 @@
-package org.koreait.commons.exceptions;
+package SpringBoot_BoardProject.commons.exceptions;
 
 import org.springframework.http.HttpStatus;
 

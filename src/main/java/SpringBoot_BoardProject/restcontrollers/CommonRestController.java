@@ -1,7 +1,7 @@
-package org.koreait.restcontrollers;
+package SpringBoot_BoardProject.restcontrollers;
 
-import org.koreait.commons.exceptions.CommonException;
-import org.koreait.commons.rest.JSONData;
+import SpringBoot_BoardProject.commons.exceptions.CommonException;
+import SpringBoot_BoardProject.commons.rest.JSONData;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

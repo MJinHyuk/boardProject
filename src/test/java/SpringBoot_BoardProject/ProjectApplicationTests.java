@@ -1,4 +1,4 @@
-package org.koreait;
+package SpringBoot_BoardProject;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

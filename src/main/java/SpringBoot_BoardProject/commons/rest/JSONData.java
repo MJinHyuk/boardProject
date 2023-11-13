@@ -1,4 +1,4 @@
-package org.koreait.commons.rest;
+package SpringBoot_BoardProject.commons.rest;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -2,86 +2,75 @@ package org.koreait.jpaex;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.koreait.commons.constants.MemberType;
+import org.koreait.entities.BoardData;
 import org.koreait.entities.Member;
+import org.koreait.repositories.BoardDataRepository;
+import org.koreait.repositories.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@TestPropertySource(properties = "spring.profiles.active=test")
 @Transactional
-@TestPropertySource(locations = "classpath:application-test.yml")
 public class Ex01 {
+    @Autowired
+    private BoardDataRepository boardDataRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @PersistenceContext
     private EntityManager em;
 
     @BeforeEach
-    void init() {
-        Member member = new Member();
-        //member.setUserNo(1L);
-        member.setEmail("user01@test.org");
-        member.setUserNm("사용자01");
-        member.setPassword("123456");
-        member.setMobile("01010000000");
-        member.setMtype(MemberType.USER);
+    void init(){
+        Member member = Member.builder()
+                .email("user01@test.org")
+                .password("123456")
+                .userNm("사용자01")
+                .mtype(MemberType.USER)
+                .build();
 
+        memberRepository.saveAndFlush(member);
 
-        em.persist(member); // 변화 감지 상태
-        em.flush();
-        em.clear(); // 영속성 비우기
+        BoardData item = BoardData.builder()
+                .subject("제목")
+                .content("내용")
+                .member(member)
+                .build();
 
+        boardDataRepository.saveAndFlush(item);
+        em.clear();
     }
 
     @Test
-    void test2() {
-        Member member = em.find(Member.class, 1L); // DB -> 영속성 컨텍스트로 추가
-        System.out.println(member);
+    void test1(){
+        Member member = Member.builder()
+                .email("user01@test.org")
+                .password("123456")
+                .userNm("사용자01")
+                .mtype(MemberType.USER)
+                .build();
 
-        Member member2 = em.find(Member.class, 1L); // 영속성 컨텍스트 -> 조회
-        System.out.println(member2);
+        memberRepository.saveAndFlush(member);
 
-        TypedQuery<Member> query = em.createQuery
-                ("SELECT m FROM Member AS m WHERE m.email LIKE :key", Member.class);
-            query.setParameter("key", "%user%");
-            Member member3 = query.getSingleResult();
+        BoardData item = BoardData.builder()
+                .subject("제목")
+                .content("내용")
+                .member(member)
+                .build();
 
-            member3.setUserNm("(수정)사용자01");
-            em.flush();
-    }
+        boardDataRepository.saveAndFlush(item);
+        BoardData data = boardDataRepository.findById(1L).orElse(null);
 
-    @Test
-    void test3() {
-
-    }
-
-    @Test
-    void test1() {
-        Member member = new Member();
-        //member.setUserNo(1L);
-        member.setEmail("user01@test.org");
-        member.setUserNm("사용자01");
-        member.setPassword("123456");
-        member.setMobile("01010000000");
-        member.setMtype(MemberType.USER);
-
-
-        em.persist(member); // 변화 감지 상태
-        em.flush();
-
-        em.detach(member); // 영속성 분리, 변화 감지 X
-
-        member.setUserNm("(수정)사용자01");
-        em.flush();
-
-        em.merge(member); // 분리된 영속 상태 -> 영속 상태, 변화 감지 O
-        em.flush();
-
-        //em.remove(member);
-        //em.flush();
+        Member member2 = data.getMember();
+        String email = member2.getEmail(); // 2차 쿼리 실행
+        System.out.println(email);
 
     }
 }

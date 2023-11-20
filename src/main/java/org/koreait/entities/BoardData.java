@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @Builder
 @Entity
@@ -28,9 +25,5 @@ public class BoardData extends BaseMember {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userNo")
     private Member member;
-
-
-    @ManyToMany(fetch=FetchType.LAZY)
-    private List<HashTag> tags = new ArrayList<>();
 
 }

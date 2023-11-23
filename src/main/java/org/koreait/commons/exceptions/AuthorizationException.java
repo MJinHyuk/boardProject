@@ -2,9 +2,10 @@ package org.koreait.commons.exceptions;
 
 import org.koreait.commons.Utils;
 import org.springframework.http.HttpStatus;
-/*
-        * 권한 부여 예외 클래스. 인증이나 권한 문제로 인해 발생하는 예외 처리
-        */
+
+/**
+ * 권한 부여 예외 클래스. 인증이나 권한 문제로 인해 발생하는 예외 처리
+ */
 public class AuthorizationException extends CommonException {
 
     /**

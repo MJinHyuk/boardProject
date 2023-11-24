@@ -12,7 +12,7 @@ public class BoardConfigForm {
 
     private String mode;
 
-    @NotBlank(message ="게시판 아이디를 입력하세요.")
+    @NotBlank(message = "게시판 아이디를 입력하세요.")
     private String bId;
 
     @NotBlank(message = "게시판 이름을 입력하세요.")

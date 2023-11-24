@@ -18,8 +18,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class BoardController implements ScriptExceptionProcess {
 
-
-
     private final HttpServletRequest request;
     private final BoardConfigSaveService saveService;
 
@@ -47,7 +45,7 @@ public class BoardController implements ScriptExceptionProcess {
     @PostMapping("/save")
     public String save(@Valid BoardConfigForm form, Errors errors, Model model) {
 
-        String mode = form.getMode();
+        String mode = Objects.requireNonNullElse(form.getMode(), "add");
         commonProcess(mode, model);
 
         if (errors.hasErrors()) {
